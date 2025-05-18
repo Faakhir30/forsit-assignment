@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Admin API Implementation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: #34495e;
+        }
+
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        pre {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #e9ecef;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .tech-item {
+            background-color: #e3f2fd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 500;
+        }
+
+        .feature-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            margin: 10px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "•";
+            color: #3498db;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        a {
+            color: #3498db;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>E-commerce Admin API Implementation</h1>
+        
+        <p>
+            <a href="https://github.com/Faakhir30/forsit-assignment" target="_blank">View project on GitHub</a>
+        </p>
+
+        <h2>Table of Contents</h2>
+        <ol>
+            <li><a href="#project-overview">Project Overview</a></li>
+            <li><a href="#technical-architecture">Technical Architecture</a></li>
+            <li><a href="#implementation-details">Implementation Details</a></li>
+            <li><a href="#api-documentation">API Documentation</a></li>
+            <li><a href="#real-time-features">Real-time Features</a></li>
+            <li><a href="#testing-and-quality">Testing and Quality Assurance</a></li>
+            <li><a href="#deployment-setup">Deployment and Setup</a></li>
+        </ol>
+
+        <h2 id="project-overview">Project Overview</h2>
+        <p>
+            The E-commerce Admin API is a robust backend system designed to provide comprehensive management capabilities for an e-commerce platform. 
+            The implementation focuses on delivering real-time analytics, efficient inventory management, and insightful business metrics.
+        </p>
+
+        <h3>Key Features</h3>
+        <ul class="feature-list">
+            <li>Product Management (CRUD operations)</li>
+            <li>Sales Tracking and Analytics</li>
+            <li>Real-time Inventory Management</li>
+            <li>Business Insights Dashboard</li>
+            <li>WebSocket-based Live Updates</li>
+        </ul>
+
+        <h2 id="technical-architecture">Technical Architecture</h2>
+        
+        <h3>Technology Stack</h3>
+        <div class="tech-stack">
+            <span class="tech-item">FastAPI (0.109.2)</span>
+            <span class="tech-item">MySQL with SQLAlchemy (2.0.27)</span>
+            <span class="tech-item">JWT with python-jose</span>
+            <span class="tech-item">WebSocket (websockets 12.0)</span>
+            <span class="tech-item">OpenAPI/Swagger</span>
+        </div>
+
+        <h3>Architecture Overview</h3>
+        <pre>
+app/
+├── api/
+│   └── v1/
+│       └── endpoints/
+│           ├── products.py
+│           ├── sales.py
+│           ├── inventory.py
+│           ├── analytics.py
+│           └── insights.py
+├── core/
+│   └── config.py
+├── db/
+│   └── session.py
+├── models/
+│   └── models.py
+└── schemas/
+    ├── product.py
+    ├── sale.py
+    └── inventory.py</pre>
+
+        <h2 id="implementation-details">Implementation Details</h2>
+
+        <h3>Database Design</h3>
+        <p>The system uses a normalized database schema with the following key tables:</p>
+        <ul class="feature-list">
+            <li>Products (id, name, description, category, price)</li>
+            <li>Sales (id, product_id, quantity, total_amount, sale_date)</li>
+            <li>Inventory (id, product_id, quantity, low_stock_threshold)</li>
+        </ul>
+
+        <h3>API Endpoints</h3>
+        
+        <h4>Product Management</h4>
+        <pre>
+@router.get("/products/", response_model=List[Product])
+@router.post("/products/", response_model=Product)
+@router.get("/products/{product_id}", response_model=Product)
+@router.put("/products/{product_id}", response_model=Product)
+@router.delete("/products/{product_id}")</pre>
+
+        <h4>Sales Analytics</h4>
+        <pre>
+@router.get("/sales/analytics")
+@router.get("/sales/revenue/comparison")
+@router.get("/sales/by-category")</pre>
+
+        <h4>Inventory Management</h4>
+        <pre>
+@router.get("/inventory/low-stock")
+@router.put("/inventory/{product_id}")
+@router.get("/inventory/changes/{product_id}")</pre>
+
+        <h3>Real-time Analytics Implementation</h3>
+        <p>The WebSocket implementation provides real-time updates for:</p>
+        <ul class="feature-list">
+            <li>Daily sales metrics</li>
+            <li>Inventory alerts</li>
+            <li>Top-performing products</li>
+        </ul>
+
+        <pre>
+@router.websocket("/analytics/ws/dashboard")
+async def dashboard_websocket(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await get_dashboard_metrics()
+            await websocket.send_json(data)
+            await asyncio.sleep(30)
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)</pre>
+
+        <h2 id="api-documentation">API Documentation</h2>
+        <p>The API is fully documented using OpenAPI/Swagger, accessible at <code>/docs</code> endpoint.</p>
+        
+        <img src="docs/docs.png" alt="API Documentation">
+        
+        <p>Detailed OpenAPI Documentation:</p>
+        <img src="docs/openapi_docs.png" alt="OpenAPI Documentation">
+
+        <h2 id="real-time-features">Real-time Features</h2>
+
+        <h3>WebSocket Dashboard</h3>
+        <ul class="feature-list">
+            <li>Provides real-time updates every 30 seconds</li>
+            <li>Implements automatic reconnection</li>
+            <li>Handles connection state management</li>
+            <li>Broadcasts updates to all connected clients</li>
+        </ul>
+
+        <h3>Business Metrics</h3>
+        <ul class="feature-list">
+            <li>Daily sales comparison</li>
+            <li>Revenue growth tracking</li>
+            <li>Low stock alerts</li>
+            <li>Top-performing products</li>
+        </ul>
+
+        <h2 id="testing-and-quality">Testing and Quality Assurance</h2>
+
+        <h3>Test Coverage</h3>
+        <ul class="feature-list">
+            <li>Unit tests for all endpoints</li>
+            <li>Integration tests for database operations</li>
+            <li>WebSocket connection testing</li>
+            <li>Error handling scenarios</li>
+        </ul>
+
+        <h3>Code Quality</h3>
+        <ul class="feature-list">
+            <li>Type hints throughout the codebase</li>
+            <li>Comprehensive error handling</li>
+            <li>Input validation using Pydantic</li>
+            <li>Consistent code style (PEP 8)</li>
+        </ul>
+
+        <h2 id="deployment-setup">Deployment and Setup</h2>
+
+        <h3>Prerequisites</h3>
+        <ul class="feature-list">
+            <li>Python 3.8+</li>
+            <li>MySQL 5.7+</li>
+            <li>Virtual environment</li>
+        </ul>
+
+        <h3>Installation Steps</h3>
+        <ol>
+            <li>Clone the repository
+                <pre>git clone https://github.com/Faakhir30/forsit-assignment
+cd forsit-assignment</pre>
+            </li>
+            <li>Create and activate virtual environment
+                <pre>python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate</pre>
+            </li>
+            <li>Install dependencies
+                <pre>pip install -r requirements.txt</pre>
+            </li>
+            <li>Configure environment variables
+                <pre>cp .env.example .env
+# Edit .env with your database credentials</pre>
+            </li>
+            <li>Run migrations
+                <pre>alembic upgrade head</pre>
+            </li>
+            <li>Start the server
+                <pre>uvicorn app.main:app --reload</pre>
+            </li>
+        </ol>
+
+        <h3>Security Considerations</h3>
+        <ul class="feature-list">
+            <li>CORS configuration for allowed origins</li>
+            <li>Database connection pooling</li>
+            <li>Rate limiting on critical endpoints</li>
+            <li>Secure WebSocket connections</li>
+        </ul>
+
+        <h2>Conclusion</h2>
+        <p>
+            This implementation provides a base implementation for e-commerce administration. The focus has been on creating 
+            a system that is both powerful and user-friendly, with real-time capabilities that enhance the administrative experience.
+        </p>
+        <p>
+            The codebase is structured to be easily extensible, allowing for future enhancements while maintaining clean 
+            architecture principles. The comprehensive test suite ensures reliability, while the detailed documentation 
+            makes it accessible for future development.
+        </p>
+    </div>
+</body>
+</html> 

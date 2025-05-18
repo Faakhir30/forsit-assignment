@@ -70,11 +70,16 @@ This is a FastAPI-based backend API for an e-commerce admin dashboard that provi
    uvicorn app.main:app --reload
    ```
 
+Detailed OpenAPI Documentation:
+
 ## API Documentation
+The API is fully documented using OpenAPI/Swagger, accessible at `/docs` endpoint.
 
 Once the server is running, you can access:
 - Interactive API documentation: http://localhost:8000/docs
+![OpenAPI Documentation](./openapi_docs.png)
 - Alternative API documentation: http://localhost:8000/redoc
+![API Documentation](./docs.png)
 
 ### Main Endpoints
 
